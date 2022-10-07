@@ -41,6 +41,10 @@ triggered = False
 
 rodando = True
 
+player_rect = playerImg.get_rect()
+nave_rect = nave.get_rect()
+missil_rect = missil.get_rect()
+
 
 #funções
 def respawn():
@@ -96,7 +100,17 @@ while rodando:
 
     if pos_missil_x == 1300:
         pos_missil_x, pos_missil_y, triggered, vel_missil_x = respawn_missil()
-    
+
+    #posicão rect
+
+    player_rect.y = pos_player_y
+    player_rect.x = pos_player_x
+
+    missil_rect.x = pos_missil_x
+    missil_rect.y = pos_missil_y
+
+    nave_rect.x = pos_nave_x
+    nave_rect.y = pos_nave_y
 
     #movimento
     x-=2
@@ -106,7 +120,7 @@ while rodando:
 
     pygame.draw.rect(screen, (255, 0, 0), player_rect, 4)
     pygame.draw.rect(screen, (255, 0, 0), missil_rect, 4)
-    pygame.draw.rect(screen, (255, 0, 0), enemy_rect, 4)
+    pygame.draw.rect(screen, (255, 0, 0), nave_rect, 4)
 
 
     #criar imagens
