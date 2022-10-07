@@ -1,5 +1,7 @@
 
+from lib2to3.pygram import python_grammar_no_print_statement
 import random
+from tkinter import font
 
 import pygame
 
@@ -37,9 +39,13 @@ vel_missil_x = 0
 pos_missil_x = 200
 pos_missil_y = 300
 
+pontos = 10
+
 triggered = False 
 
 rodando = True
+
+font = pygame.font.SysFont('fonts/PixelGameFont,ttf', 50)
 
 player_rect = playerImg.get_rect()
 nave_rect = nave.get_rect()
@@ -71,6 +77,18 @@ while rodando:
     if rel_x < 1280:
         screen.blit(gb, (rel_x, 0))
 
+    def colisions(): 
+        global pontos
+        if player_rect.colliderect(nave_rect) or nave_rect.x == 60:
+            pontos -=1
+            return True
+        elif missil_rect.colliderect(nave_rect):
+            pontos +=1
+            return True
+        else:
+            return False
+
+
     #teclas
 
     tecla = pygame.key.get_pressed()
@@ -101,6 +119,10 @@ while rodando:
     if pos_missil_x == 1300:
         pos_missil_x, pos_missil_y, triggered, vel_missil_x = respawn_missil()
 
+    if pos_nave_x == 50 or colisions():
+        pos_nave_x = respawn()[0]
+        pos_nave_y = respawn()[1]
+
     #posicão rect
 
     player_rect.y = pos_player_y
@@ -122,12 +144,16 @@ while rodando:
     pygame.draw.rect(screen, (255, 0, 0), missil_rect, 4)
     pygame.draw.rect(screen, (255, 0, 0), nave_rect, 4)
 
+    score = font.render(f'Pontos: {int(pontos)} ', True, (0,0,0))
+    screen.blit(score, (50,50))
 
     #criar imagens
     screen.blit(nave, (pos_nave_y, pos_nave_y))
     screen.blit(missil, (pos_missil_x, pos_missil_y))
     screen.blit(playerImg, (pos_player_x, pos_player_y))
 
+
+    print(pontos)
 
     pygame.display.update()
 
